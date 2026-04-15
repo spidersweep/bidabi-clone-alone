@@ -4,3 +4,4 @@ data/raw/
 data/raw/images/
 !data/raw.dvc
 data/localstore/
+/best_model_resnet18_finetuned.pth
