@@ -5,12 +5,12 @@ import os
 from aiohttp import ClientSession, ClientTimeout
 
 API_URL = "https://world.openfoodfacts.org/cgi/search.pl"
-HEADERS = {"User-Agent": "MyAwesomeApp/1.0"}
+HEADERS = {"User-Agent": "ProjetEtudiant_Lara_Bot/1.0 (lara@example.com)"}
 
 OUTPUT_DIR = "data"
 
-CATEGORY = "sugar" #"bread", "milk", "champagnes", "butter" 
-TARGET_COUNT = 180
+CATEGORY = "champagnes" #"bread", "milk", "champagnes", "butter" 
+TARGET_COUNT = 100
 PAGE_SIZE = 100
 MAX_PAGES = 50
 
@@ -74,7 +74,9 @@ async def fetch_page(session, category, page, page_size, sem):
 # -------------------------
 # Async image download
 # -------------------------
-async def download_image(session, url, image_id, sem, folder="data/images/sugar"):
+async def download_image(session, url, image_id, sem, category, folder=None):
+    if folder is None:
+        folder = f"data/raw/images/{category}"
     if not url:
         return
 
@@ -126,7 +128,7 @@ async def scrape(category, target_count, page_size, max_pages):
                     image_id = info[0]
 
                     task = asyncio.create_task(
-                        download_image(session, image_url, image_id, sem_img)
+                        download_image(session, image_url, image_id, sem_img, category)
                     )
                     image_tasks.append(task)
 
@@ -154,7 +156,7 @@ def save_to_csv(filename, rows):
 # -------------------------
 def main():
     products = asyncio.run(scrape(CATEGORY, TARGET_COUNT, PAGE_SIZE, MAX_PAGES))
-    output_file = f"{OUTPUT_DIR}/metadata_{CATEGORY}_{TARGET_COUNT}.csv"
+    output_file = f"data/raw/metadata_{CATEGORY}_{TARGET_COUNT}.csv"
     save_to_csv(output_file, products)
     print(f"✔ Fichier {output_file} créé. Produits valides collectés : {len(products)}")
 
