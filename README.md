@@ -20,12 +20,11 @@
 ## Objectif
 
 Ce projet implémente un pipeline ML complet pour classifier des images de produits alimentaires en 3 catégories : sugar, butter et champagnes. Il couvre l'ensemble du cycle de vie d'un projet ML :
-
-Collecte : scrapping asynchrone de l'API OpenFoodFacts
-Stockage : structure RAW → INTERIM → PROCESSED
-Versionnement : code avec Git, données et modèles avec DVC
-Entraînement : ResNet-18 fine-tuné avec augmentations avancées
-Évaluation : métriques complètes (accuracy, F1, ROC, confusion matrix)
+- Collecte : scrapping asynchrone de l'API OpenFoodFacts
+- Stockage : structure RAW → INTERIM → PROCESSED
+- Versionnement : code avec Git, données et modèles avec DVC
+- Entraînement : ResNet-18 fine-tuné avec augmentations avancées
+- Évaluation : métriques complètes (accuracy, F1, ROC, confusion matrix)
 ---
 
 ## Structure du projet
