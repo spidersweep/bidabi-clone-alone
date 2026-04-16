@@ -6,8 +6,13 @@ Projet de classification d'images de produits alimentaires basé sur ResNet-18, 
 
 ## Objectif
 
-Construire un pipeline ML reproductible pour classifier des images de produits alimentaires (sugar, butter, champagnes) à partir de l'API OpenFoodFacts.
+Ce projet implémente un pipeline ML complet pour classifier des images de produits alimentaires en 3 catégories : sugar, butter et champagnes. Il couvre l'ensemble du cycle de vie d'un projet ML :
 
+Collecte : scrapping asynchrone de l'API OpenFoodFacts
+Stockage : structure RAW → INTERIM → PROCESSED
+Versionnement : code avec Git, données et modèles avec DVC
+Entraînement : ResNet-18 fine-tuné avec augmentations avancées
+Évaluation : métriques complètes (accuracy, F1, ROC, confusion matrix)
 ---
 
 ## Structure du projet
