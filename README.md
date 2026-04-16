@@ -1,6 +1,19 @@
-# bidabi-clone-alone
+<h1 align="center">
+✨🚀 Bidabi — Pipeline de Machine Learning 🚀✨
+</h1>
 
-Projet de classification d'images de produits alimentaires basé sur ResNet-18, avec un pipeline complet de collecte, versionnement et entraînement.
+<p align="center">
+  <img src="https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif" width="200">
+</p>
+
+<p align="center">
+  <b>Pipeline de Machine Learning de bout en bout avec PyTorch & DVC</b>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-blue">
+  <img src="https://img.shields.io/badge/PyTorch-DeepLearning-red">
+  <img src="https://img.shields.io/badge/DVC-DataVersioning-green">
+</p>
 
 ---
 
@@ -43,6 +56,17 @@ bidabi-clone-alone/
 ├── .gitignore
 └── README.md
 ```
+## 🔄 Pipeline de Machine Learning
+
+Le pipeline comprend les étapes suivantes :
+
+* Création et structuration du dataset (jeu de données de classification d’images)
+* Versionnement des données avec DVC
+* Division du dataset en ensembles d’entraînement / validation / test (70/20/10)
+* Augmentation des données (redimensionnement, retournement horizontal, conversion en tenseur)
+* Entraînement d’un modèle de deep learning (ResNet18)
+* Suivi de la perte (loss) en entraînement et en validation
+* Sauvegarde du meilleur modèle entraîné
 
 ---
 
