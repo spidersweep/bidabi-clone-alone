@@ -7,3 +7,4 @@ seaborn==0.13.2
 torch==2.11.0
 torchvision==0.26.0
 urllib3==2.6.3
+dvc==3.67.1
