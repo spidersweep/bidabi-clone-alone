@@ -1,46 +1,142 @@
-# bidabi-clone-adapt-create
-# BIDABI : Clone → Adapt → Create
+# bidabi-clone-alone
 
-Dépôt pédagogique du cours **Big Data and Business Intelligence (BIDABI)**.  
-Ce projet a pour objectif d’initier les étudiants au travail avec du code open‑source, à l’adaptation de projets existants et à la création de leur propre jeu de données d’images.
+Projet de classification d'images de produits alimentaires basé sur ResNet-18, avec un pipeline complet de collecte, versionnement et entraînement.
 
-## 🎯 Objectif du dépôt
-Ce dépôt sert de **plateforme d’apprentissage** où les étudiants réalisent un cycle complet de travail en data et en machine learning :
+---
 
-- cloner un projet open‑source depuis GitHub
-- analyser sa structure, ses dépendances et son fonctionnement
-- adapter le code à un nouveau contexte
-- créer un jeu de données d’images personnalisé
-- intégrer ce jeu de données dans un pipeline ML existant
+## Objectif
 
-L’objectif est de reproduire des situations réelles rencontrées par les ingénieurs data et ML lorsqu’ils doivent réutiliser et modifier du code provenant d’autres développeurs.
+Construire un pipeline ML reproductible pour classifier des images de produits alimentaires (sugar, butter, champagnes) à partir de l'API OpenFoodFacts.
 
-## 🎓 Public visé
-Ce projet est destiné aux étudiants du cours **BIDABI**, notamment ceux qui s’intéressent à :
+---
 
-- l’apprentissage automatique
-- l’ingénierie des données
-- la reproductibilité des expériences
-- l’utilisation de GitHub et des projets open‑source
+## Structure du projet
 
-## 🧩 Contenu du dépôt
-Le dépôt inclura :
+```
+bidabi-clone-alone/
+│
+├── src/
+│   ├── asyscrapper.py        # Scrapper asynchrone OpenFoodFacts
+│   ├── data_loader.py        # Chargement et préparation des données
+│   └── classificator.py      # Pipeline d'entraînement ResNet-18
+│
+├── data/
+│   ├── raw/                  # Données brutes (versionnées avec DVC)
+│   │   ├── images/
+│   │   │   ├── sugar/
+│   │   │   ├── butter/
+│   │   │   └── champagnes/
+│   │   ├── metadata_sugar_180.csv
+│   │   ├── metadata_butter_180.csv
+│   │   └── metadata_champagnes_180.csv
+│   └── readme.md
+│
+├── .dvc/                     # Configuration DVC
+├── data/raw.dvc              # Pointeur DVC vers le dataset RAW
+├── best_model_resnet18_finetuned.pth.dvc  # Pointeur DVC vers le modèle
+├── requirements.txt          # Dépendances Python
+├── .gitignore
+└── README.md
+```
 
-- des exemples de code à analyser et adapter
-- un modèle de structure pour le jeu de données
-- des consignes pour les travaux pratiques
-- des instructions pour exécuter et modifier le projet
+---
 
-## 🛠️ Compétences développées
-Les étudiants apprendront à :
+## Prérequis
 
-- lire et comprendre du code écrit par d’autres
-- manipuler des dépôts GitHub
-- concevoir et organiser un jeu de données d’images
-- intégrer des données dans un pipeline ML
-- documenter leur travail de manière claire et reproductible
+- Python 3.12
+- Git
+- DVC 3.67.1
 
-## 📄 Licence et usage
-Ce dépôt est destiné **exclusivement à des fins pédagogiques** dans le cadre du cours BIDABI.  
-Le code et les ressources peuvent être simplifiés ou modifiés pour faciliter l’apprentissage.
+---
 
+## Installation et reproduction
+
+### 1. Cloner le dépôt
+```bash
+git clone git@github.com:spidersweep/bidabi-clone-alone.git
+cd bidabi-clone-alone
+```
+
+### 2. Créer et activer l'environnement virtuel
+```bash
+py -3.12 -m venv .venv
+.venv\Scripts\Activate
+```
+
+### 3. Installer les dépendances
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Récupérer les données et le modèle via DVC
+```bash
+dvc pull
+```
+
+### 5. Lancer l'entraînement
+```bash
+python src/classificator.py
+```
+
+---
+
+## Collecte des données
+
+Le scrapper collecte les images et métadonnées depuis l'API OpenFoodFacts.
+Pour relancer la collecte, modifier la variable `CATEGORY` dans `src/asyscrapper.py` :
+
+```bash
+python src/asyscrapper.py
+```
+
+Les données sont sauvegardées dans `data/raw/images/<categorie>/` et `data/raw/metadata_<categorie>.csv`.
+
+---
+
+## Pipeline d'entraînement
+
+Le fichier `src/classificator.py` implémente :
+
+- **Chargement** : `datasets.ImageFolder` depuis `data/raw/images/`
+- **Séparation** : 60% train / 20% validation / 20% test
+- **Augmentations** : RandomHorizontalFlip, RandomRotation, ColorJitter, GaussianBlur, MixUp
+- **Modèle** : ResNet-18 fine-tuné (poids ImageNet)
+- **Optimiseur** : Adam + CosineAnnealingLR
+- **Early stopping** : patience = 3
+- **Métriques** : Loss, Accuracy, Confusion Matrix, ROC curves, Per-class accuracy
+
+### Résultats obtenus
+| Métrique | Valeur |
+|----------|--------|
+| Meilleure Val Accuracy | ~80% |
+| Epochs | 19/20 (early stopping) |
+| Catégories | sugar, butter, champagnes |
+
+---
+
+## Versionnement
+
+| Outil | Usage |
+|-------|-------|
+| Git | Versionnement du code |
+| DVC | Versionnement des données et du modèle |
+
+---
+
+## Versions
+
+| Tag | Description |
+|-----|-------------|
+| v1.0 | Version initiale du projet |
+| v2.0 | Nouveau scrapper et données RAW |
+| v2.1 | Dataset RAW versionné avec DVC |
+| v3.0 | Pipeline complet avec modèle entraîné |
+
+---
+
+## Niveau visé
+
+Ce projet correspond aux compétences d'un profil **Junior à Intermédiaire** en Machine Learning / MLOps :
+- Machine Learning Engineer Junior
+- Data Scientist Junior
+- MLOps Engineer Junior
